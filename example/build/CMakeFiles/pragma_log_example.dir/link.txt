@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/pragma_log_example.dir/main.cpp.o CMakeFiles/pragma_log_example.dir/app_bundle.cpp.o -o pragma_log_example

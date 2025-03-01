@@ -1,0 +1,3 @@
+/home/trolly/workspace/cpp_test/pragma_log/example/build/CMakeFiles/pragma_log_example.dir
+/home/trolly/workspace/cpp_test/pragma_log/example/build/CMakeFiles/edit_cache.dir
+/home/trolly/workspace/cpp_test/pragma_log/example/build/CMakeFiles/rebuild_cache.dir
