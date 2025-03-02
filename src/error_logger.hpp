@@ -8,7 +8,7 @@ namespace pragma
 class ErrorLogger : public BaseLogger 
 {
 public:
-    ErrorLogger(const LoggingCategory& category, 
+    constexpr ErrorLogger(const LoggingCategory& category, 
                 const std::string& file, 
                 int line) : 
         BaseLogger(category, 

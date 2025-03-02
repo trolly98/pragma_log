@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <bitset>
+#include <cstdint>
 
 namespace pragma
 {
@@ -25,34 +26,37 @@ public:
     }
 
     explicit LoggingCategory(const std::string& name) : 
-            _category_name(name),
+            _category_name(name.c_str()),
             _enabled_levels(0b111) // All levels enabled initially (DEBUG, WARNING, ERROR)
     {}
 
-    const std::string& get_category_name() const 
+    constexpr const char* get_category_name() const 
     { 
-        return _category_name; 
+        return _category_name;
     }
 
-    bool is_debug_enabled() const { return _enabled_levels.test(static_cast<size_t>(Level::DEBUG)); }
-    bool is_warning_enabled() const { return _enabled_levels.test(static_cast<size_t>(Level::WARNING)); }
-    bool is_error_enabled() const { return _enabled_levels.test(static_cast<size_t>(Level::ERROR)); }
+    constexpr bool is_debug_enabled() const { return (_enabled_levels & (1 << static_cast<uint8_t>(Level::DEBUG))) != 0; }
+    constexpr bool is_warning_enabled() const { return (_enabled_levels & (1 << static_cast<uint8_t>(Level::WARNING))) != 0; }
+    constexpr bool is_error_enabled() const { return (_enabled_levels & (1 << static_cast<uint8_t>(Level::ERROR))) != 0; }
 
-    void set_enabled(const Level level, bool state) 
+    constexpr void set_enabled(const Level level, bool state) 
     {
-        if (state)
-        {
-            _enabled_levels.set(static_cast<size_t>(level));
-        }
-        else
-        {
-            _enabled_levels.reset(static_cast<size_t>(level));
-        }
+        uint8_t mask = (1 << static_cast<uint8_t>(level));
+        _enabled_levels = state ? (_enabled_levels | mask) : (_enabled_levels & ~mask);
+
+        // if (state)
+        // {
+        //     _enabled_levels.set(static_cast<size_t>(level));
+        // }
+        // else
+        // {
+        //     _enabled_levels.reset(static_cast<size_t>(level));
+        // }
     }
     
 private:
-    std::string _category_name;
-    std::bitset<3> _enabled_levels; // Bitset to represent the three levels (DEBUG, WARNING, ERROR)
+    const char* _category_name;
+    uint8_t _enabled_levels; // Bitset to represent the three levels (DEBUG, WARNING, ERROR)
 };
 
 };

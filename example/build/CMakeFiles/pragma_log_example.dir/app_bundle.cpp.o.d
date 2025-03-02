@@ -137,6 +137,10 @@ CMakeFiles/pragma_log_example.dir/app_bundle.cpp.o: \
  /usr/include/c++/14/bits/basic_ios.tcc \
  /usr/include/c++/14/bits/ostream.tcc /usr/include/c++/14/istream \
  /usr/include/c++/14/bits/istream.tcc /usr/include/c++/14/bitset \
+ /usr/include/c++/14/cstdint \
+ /usr/lib/gcc/x86_64-redhat-linux/14/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/bits/stdint-least.h \
  /home/trolly/workspace/cpp_test/pragma_log/example/../src/warning_logger.hpp \
  /home/trolly/workspace/cpp_test/pragma_log/example/../src/error_logger.hpp \
  /home/trolly/workspace/cpp_test/pragma_log/example/../src/logging_registry.hpp \
@@ -148,4 +152,4 @@ CMakeFiles/pragma_log_example.dir/app_bundle.cpp.o: \
  /usr/include/c++/14/ext/aligned_buffer.h \
  /usr/include/c++/14/bits/enable_special_members.h \
  /usr/include/c++/14/bits/node_handle.h \
- /usr/include/c++/14/bits/erase_if.h
+ /usr/include/c++/14/bits/erase_if.h /usr/include/c++/14/array

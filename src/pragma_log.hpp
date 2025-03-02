@@ -8,10 +8,11 @@
     extern pragma::LoggingCategory name;
 
 #define PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(name, categoryName) \
-    pragma::LoggingCategory name(categoryName);
-    
-#define PRAGMA_REGISTER_LOGGING_CATEGORY(name) \
-    pragma::LoggingRegistry::register_category(name);
+    pragma::LoggingCategory name(categoryName); \
+    const struct name##_registrator { \
+        name##_registrator() { pragma::LoggingRegistry::register_category(name); } \
+    } name##_registrator_instance;
+        
 
 #define PRAGMA_LOGGING_CONFIGURE(rules) \
     pragma::LoggingRegistry::configure(rules);

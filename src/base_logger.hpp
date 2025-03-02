@@ -8,13 +8,13 @@ namespace pragma
 class BaseLogger
 {
 public:
-    BaseLogger(const LoggingCategory& category, 
+    constexpr BaseLogger(const LoggingCategory& category, 
                const std::string& file, 
                int line, 
                const LoggingCategory::Level level)
         : 
         _category(category), 
-        _file(file), 
+        _file(file.c_str()), 
         _line(line), 
         _level(level) 
     {}
@@ -45,7 +45,7 @@ public:
 
 protected:
     const LoggingCategory& _category;
-    std::string _file;
+    const char* _file;
     int _line;
     LoggingCategory::Level _level;
 };
