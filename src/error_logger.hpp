@@ -9,7 +9,7 @@ class ErrorLogger : public BaseLogger
 {
 public:
     constexpr ErrorLogger(const LoggingCategory& category, 
-                const std::string& file, 
+                const char* file, 
                 int line) : 
         BaseLogger(category, 
                     file, 

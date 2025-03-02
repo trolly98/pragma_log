@@ -40,7 +40,11 @@ public:
                 LoggingCategory* cat = get_category(category);
                 if (cat) 
                 {
-                    if (level == "debug")
+                    if (level == "info")
+                    {
+                        cat->set_enabled(LoggingCategory::Level::INFO, state);
+                    }
+                    else if (level == "debug")
                     {
                         cat->set_enabled(LoggingCategory::Level::DEBUG, state);
                     }
@@ -54,6 +58,7 @@ public:
                     }
                     else if (level == "*") 
                     {
+                        cat->set_enabled(LoggingCategory::Level::INFO, state);
                         cat->set_enabled(LoggingCategory::Level::DEBUG, state);
                         cat->set_enabled(LoggingCategory::Level::WARNING, state);
                         cat->set_enabled(LoggingCategory::Level::ERROR, state);

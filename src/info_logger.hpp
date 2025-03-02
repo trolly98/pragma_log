@@ -5,16 +5,16 @@
 namespace pragma
 {
 
-class DebugLogger : public BaseLogger 
+class InfoLogger : public BaseLogger 
 {
 public:
-    constexpr DebugLogger(const LoggingCategory& category, 
+    constexpr InfoLogger(const LoggingCategory& category, 
                 const char* file, 
                 int line) : 
         BaseLogger(category,
                     file, 
                     line, 
-                    LoggingCategory::Level::DEBUG) 
+                    LoggingCategory::Level::INFO) 
     {}
 };
 

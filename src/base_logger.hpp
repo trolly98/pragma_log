@@ -9,12 +9,12 @@ class BaseLogger
 {
 public:
     constexpr BaseLogger(const LoggingCategory& category, 
-               const std::string& file, 
+               const char* file, 
                int line, 
                const LoggingCategory::Level level)
         : 
         _category(category), 
-        _file(file.c_str()), 
+        _file(file), 
         _line(line), 
         _level(level) 
     {}
@@ -34,13 +34,13 @@ public:
 
     constexpr bool is_enabled() const 
     {
-        switch (_level) 
-        {
-            case LoggingCategory::Level::DEBUG: return _category.is_debug_enabled();
-            case LoggingCategory::Level::WARNING: return _category.is_warning_enabled();
-            case LoggingCategory::Level::ERROR: return _category.is_error_enabled();
-            default: return false;
-        }
+        return 
+        (
+            _level == LoggingCategory::Level::INFO ? _category.is_info_enabled() :
+            _level == LoggingCategory::Level::DEBUG ? _category.is_debug_enabled() :
+            _level == LoggingCategory::Level::WARNING ? _category.is_warning_enabled() :
+            _level == LoggingCategory::Level::ERROR ? _category.is_error_enabled() : false
+        );
     }
 
 protected:

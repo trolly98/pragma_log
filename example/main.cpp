@@ -17,15 +17,29 @@ void measure_execution_time(const std::function<void()>& func) {
     std::cout << "Execution time: " << elapsed.count() << " seconds\n";
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+    // PRAGMA_LOGGING_CONFIGURE(argv[1]);
+    // pragma_debug(TEST) << "TEST";
+
     PRAGMA_LOGGING_CONFIGURE("TEST.*=false");
+
+    // measure_execution_time([]() {
+    //     for (int i = 0; i < 1000000; ++i) {
+    //         pragma_info(TEST) << "TEST";
+    //     }
+    // });
+
+    // PRAGMA_LOGGING_CONFIGURE("TEST.debug=true");
+    // pragma_debug(TEST) << "TEST";
+    // PRAGMA_LOGGING_CONFIGURE("TEST.*=false");
 
     measure_execution_time([]() {
         for (int i = 0; i < 1000000; ++i) {
             pragma_debug(TEST) << "TEST";
         }
     });
+
 
     measure_execution_time([]() {
         for (int i = 0; i < 1000000; ++i) {
