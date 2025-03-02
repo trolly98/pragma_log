@@ -6,7 +6,7 @@
 
 #include <array>
 #include <string>
-
+#include "utils.hpp"
 namespace pragma
 {
 
@@ -15,13 +15,12 @@ class LoggingRegistry
 public:
     static void register_category(LoggingCategory& category) 
     {
-        _categories()[category.get_category_name()] = &category;
+        _categories()[category.get_category_id()] = &category;
     }
 
-    static LoggingCategory* get_category(const std::string& name) 
+    static LoggingCategory* get_category(const category_id_t id) 
     {
-        auto it = _categories().find(name);
-        return it != _categories().end() ? it->second : nullptr;
+       return _categories().at(id);
     }
 
     static void configure(const std::string& rules) 
@@ -37,7 +36,8 @@ public:
                 std::string category = rule.substr(0, dot);
                 std::string level = rule.substr(dot + 1, equal - dot - 1);
                 bool state = rule.substr(equal + 1) == "true";
-                LoggingCategory* cat = get_category(category);
+                auto cat_id = djb2_hash(category.c_str());
+                LoggingCategory* cat = get_category(cat_id);
                 if (cat) 
                 {
                     if (level == "info")
@@ -69,9 +69,9 @@ public:
     }
 
 private:
-    static std::unordered_map<std::string, LoggingCategory*>& _categories() 
+    static std::unordered_map<category_id_t, LoggingCategory*>& _categories() 
     {
-        static std::unordered_map<std::string, LoggingCategory*> instance;
+        static std::unordered_map<category_id_t, LoggingCategory*> instance;
         return instance;
     }
 };

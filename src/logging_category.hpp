@@ -2,9 +2,8 @@
 
 #include <string>
 #include <iostream>
-#include <bitset>
-#include <cstdint>
-
+#include <cstdint> 
+#include "utils.hpp"
 namespace pragma
 {
 
@@ -38,6 +37,10 @@ public:
     constexpr const char* get_category_name() const 
     { 
         return _category_name;
+    }
+    constexpr const category_id_t get_category_id() const 
+    { 
+        return djb2_hash(_category_name);
     }
 
     constexpr bool is_info_enabled() const { return (_enabled_levels & (1 << static_cast<uint8_t>(Level::INFO))) != 0; }
