@@ -190,10 +190,14 @@ Here’s how a full example might look in your application:
 #include "pragma_logging.hpp"
 
 PRAGMA_DECLARE_LOGGING_CATEGORY(myCategory);
-PRAGMA_LOGGING_CONFIGURE("level=debug, output=console");
+PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(myCategory, "myCategory");
 
-int main() {
+int main() 
+{
     PRAGMA_LOGGING_PATTERN("%{level} %{time} %{message}");
+    PRAGMA_LOGGING_CONFIGURE("myCategory.*=false, myCategory.error=true");
+    PRAGMA_LOGGING_TARGET_BOTH();
+
 
     pragma_info(myCategory) << "Application started";
     pragma_debug(myCategory) << "Debugging application";
