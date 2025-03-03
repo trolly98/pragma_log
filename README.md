@@ -28,27 +28,16 @@ To get started with the super logging functionality, you need to **define your l
 Make sure the appropriate header file is included for logging functionality to work:
 
 ```cpp
-#include "logging.h"
+#include "pragma_logging.hpp"
 ```
-
-### Step 2: Configure the logger
-Configure logging rules globally by calling `PRAGMA_LOGGING_CONFIGURE(rules)` with your desired configuration.
-
-```cpp
-PRAGMA_LOGGING_CONFIGURE("your_custom_rules");
-```
-
-This will set the logging rules that your project will follow.
-
----
 
 ## Defining Logging Categories
 
 You can declare logging categories for different parts of your program. Each category allows you to control logging levels and formatting separately.
 
-### Declaring a Logging Category
+### Declaring a Logging Category 'in .hpp files'
 
-To declare a category, use the macro `PRAGMA_DECLARE_LOGGING_CATEGORY(name)`.
+To declare a category, use the macro `PRAGMA_DECLARE_LOGGING_CATEGORY(name)`. 
 
 ```cpp
 PRAGMA_DECLARE_LOGGING_CATEGORY(myCategory);
@@ -56,7 +45,7 @@ PRAGMA_DECLARE_LOGGING_CATEGORY(myCategory);
 
 This creates a `myCategory` logging category that can be used to log different levels of information (info, debug, warning, error).
 
-### Declaring a Logging Category with a Custom Name
+### Declaring a Logging Category with a Custom Name 'in .cpp files'
 
 If you want to assign a custom name to the category, use `PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(name, categoryName)`.
 
@@ -72,7 +61,7 @@ Now, you have a logging category with a custom name that will be registered auto
 
 You can configure the logging behavior by specifying rules using the `PRAGMA_LOGGING_CONFIGURE` macro. These rules allow you to **enable or disable specific logging levels** for each category, or apply global logging rules across all categories. 
 
-### Syntax
+### Syntax with ',' to diveded rules 
 
 ```cpp
 PRAGMA_LOGGING_CONFIGURE("category_name.level=true/false");
@@ -96,10 +85,7 @@ Here’s what you can configure:
 - **Enabling and disabling individual levels for a category:**
 
 ```cpp
-PRAGMA_LOGGING_CONFIGURE("myCategory.debug=true");    // Enables debug logs for 'myCategory'
-PRAGMA_LOGGING_CONFIGURE("myCategory.info=false");     // Disables info logs for 'myCategory'
-PRAGMA_LOGGING_CONFIGURE("myCategory.warning=true");   // Enables warning logs for 'myCategory'
-PRAGMA_LOGGING_CONFIGURE("myCategory.error=true");     // Enables error logs for 'myCategory'
+PRAGMA_LOGGING_CONFIGURE("myCategory.debug=true,myCategory.info=false,myCategory.warning=true,myCategory.error=true");   
 ```
 
 - **Disabling all logs for a category:**
@@ -175,9 +161,9 @@ Each macro will automatically include metadata like the file, line number, and f
 You can fully customize how your logs appear by changing the **log pattern**. Here are the available pattern placeholders:
 
 - **`%{level}`**: Log level (info, debug, warning, error).
-- **`%{full_time}`**: Full timestamp.
-- **`%{time}`**: Simple timestamp.
-- **`%{precise_time}`**: High-precision timestamp.
+- **`%{full_time}`**: Full timestamp.               --> ("%Y-%m-%d %H:%M:%S")
+- **`%{time}`**: Simple timestamp.                  --> ("%H:%M:%S")
+- **`%{precise_time}`**: High-precision timestamp.  --> ("%H:%M:%S".ms)
 - **`%{file}`**: Source file.
 - **`%{line}`**: Line number.
 - **`%{function}`**: Function name.
@@ -201,7 +187,7 @@ This will set the log format to include the log level, timestamp, file name, lin
 Here’s how a full example might look in your application:
 
 ```cpp
-#include "logging.h"
+#include "pragma_logging.hpp"
 
 PRAGMA_DECLARE_LOGGING_CATEGORY(myCategory);
 PRAGMA_LOGGING_CONFIGURE("level=debug, output=console");
