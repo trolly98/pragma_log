@@ -7,7 +7,6 @@
 PRAGMA_DECLARE_LOGGING_CATEGORY(TEST);
 PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(TEST, "TEST");
 
-
 void measure_execution_time(const std::function<void()>& func) {
     auto start = std::chrono::high_resolution_clock::now();
     func();
@@ -19,8 +18,11 @@ void measure_execution_time(const std::function<void()>& func) {
 
 int main(int argc, char* argv[])
 {
-    // PRAGMA_LOGGING_CONFIGURE(argv[1]);
-    // pragma_debug(TEST) << "TEST";
+    PRAGMA_LOGGING_PATTERN("[%{full_time}] [%{level}] %{message} (%{file}:%{line})");
+    PRAGMA_LOGGING_CONFIGURE("TEST.debug=true");
+    PRAGMA_LOGGING_TARGET_BOTH();
+
+    pragma_debug(TEST) << "TEST" << "TEST2";
 
     PRAGMA_LOGGING_CONFIGURE("TEST.*=false");
 
@@ -56,7 +58,7 @@ int main(int argc, char* argv[])
     pragma_warning(TEST)<<"TEST";
     pragma_error(TEST)<<"TEST";
 
-    pragma_debug(TEST1) << "TEST";
+    //pragma_debug(TEST1) << "TEST";
 
     AppBundle app;
 }

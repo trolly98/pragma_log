@@ -6,7 +6,9 @@
 #include "error_logger.hpp"
 #include "logging_category.hpp"
 #include "logging_registry.hpp"
-    
+#include "logging_target.hpp"
+#include "patterns/logging_pattern.hpp"
+
 #define PRAGMA_DECLARE_LOGGING_CATEGORY(name) \
     extern pragma::LoggingCategory name;
 
@@ -18,6 +20,18 @@
         
 #define PRAGMA_LOGGING_CONFIGURE(rules) \
     pragma::LoggingRegistry::configure(rules);
+
+#define PRAGMA_LOGGING_PATTERN(pattern) \
+    pragma::LoggingPattern::instance().set_pattern(pattern);
+
+#define PRAGMA_LOGGING_TARGET_BOTH() \
+    pragma::LoggingTarget::instance().set(pragma::LoggingTarget::Target::BOTH);
+
+#define PRAGMA_LOGGING_TARGET_CONSOLE() \
+    pragma::LoggingTarget::instance().set(pragma::LoggingTarget::Target::CONSOLE);
+
+#define PRAGMA_LOGGING_TARGET_SYSLOG() \
+    pragma::LoggingTarget::instance().set(pragma::LoggingTarget::Target::SYSLOG);
 
 #define pragma_info(category) pragma::InfoLogger(category, __FILE__, __LINE__)
 #define pragma_debug(category) pragma::DebugLogger(category, __FILE__, __LINE__)

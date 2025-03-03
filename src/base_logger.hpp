@@ -1,7 +1,10 @@
 #pragma once
 
+#include <syslog.h>
 #include "logging_category.hpp"
-    
+#include "patterns/logging_pattern.hpp"
+#include "logging_target.hpp"
+
 namespace pragma
 {
 
@@ -16,7 +19,7 @@ public:
         _category(category), 
         _file(file), 
         _line(line), 
-        _level(level) 
+        _level(level)
     {}
 
     template<typename T>
@@ -24,10 +27,33 @@ public:
     {
         if (this->is_enabled()) 
         {
-            std::cout << "[" << LoggingCategory::level_to_string(_level) << "] " 
-                      << _category.get_category_name() 
-                      << " (" << _file << ":" << _line << ") " 
-                      << message << std::endl;
+            const auto target = LoggingTarget::instance().get();
+
+            const auto msg = LoggingPattern::instance().format(
+                message,
+                LoggingCategory::level_to_string(_level),
+                _file,
+                _line,
+                __func__,
+                _category.get_category_name()
+                );
+
+            if (target == LoggingTarget::Target::BOTH)
+            {
+                syslog  (LOG_INFO, "%s", msg.c_str());
+                std::cout << msg << std::endl;
+                return *this;
+            }
+            if (target == LoggingTarget::Target::CONSOLE)
+            {
+                std::cout << msg << std::endl;
+                return *this;
+            }
+            if (target == LoggingTarget::Target::SYSLOG)
+            {
+                syslog  (LOG_INFO, "%s", msg.c_str());
+                return *this;
+            }
         }
         return *this;
     }
