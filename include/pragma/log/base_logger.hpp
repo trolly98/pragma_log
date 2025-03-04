@@ -2,7 +2,7 @@
 
 #include <syslog.h>
 #include "logging_category.hpp"
-#include "patterns/logging_pattern.hpp"
+#include "logging_pattern.hpp"
 #include "logging_target.hpp"
 
 namespace pragma

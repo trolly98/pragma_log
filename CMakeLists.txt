@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(pragma_log_library LANGUAGES CXX)
+project(pragma_log LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(pragma_log 
-    src/pragma_log.hpp
-    src/logging_category.hpp
-    src/debug_logger.hpp
-)
+
+add_library(pragma_log INTERFACE)
+
+target_include_directories(pragma_log INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)

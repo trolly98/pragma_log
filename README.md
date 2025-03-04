@@ -2,9 +2,9 @@ Ecco l'aggiornamento del README con la spiegazione dettagliata della macro `PRAG
 
 ---
 
-# Super Cool Logging Library - README
+# C++ Logging Library - README
 
-Welcome to the most **powerful, flexible, and elegant logging** library ever! Whether you’re debugging, tracking errors, or just need some juicy log output for your project, this library has got your back. Easy to configure, easy to use, and packed with killer features. Let’s dive into how to set up and use this library like a boss.
+Welcome to pragma_log, a logging library that's simple and pragmatic! Whether you're debugging, tracking errors, or just need a solid log output for your project, this library gets the job done without any fluff. Easy to configure, easy to use, and, like any good tool, it focuses on what really matters. Let’s see how to put it to work.
 
 ---
 
@@ -24,12 +24,20 @@ Welcome to the most **powerful, flexible, and elegant logging** library ever! Wh
 
 To get started with the super logging functionality, you need to **define your logging categories** and **set up logging targets**. Below is a quick rundown of the essential macros you’ll use to set up your project.
 
-### Step 1: Include the header file
+### Option 1: single_include the header file
 Make sure the appropriate header file is included for logging functionality to work:
 
 ```cpp
-#include "pragma_logging.hpp"
+#include "single_include/pragma/log.hpp"
 ```
+
+### Option 2: 
+```CMakeLists.txt
+add_directory(path/to/pragma_log)
+[...]
+target_link_libraries(pragma_log_example PRIVATE pragma_log)
+```
+
 
 ## Defining Logging Categories
 

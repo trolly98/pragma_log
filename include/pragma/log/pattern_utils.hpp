@@ -9,10 +9,6 @@
 #include <thread>
 
 
-// #ifndef LOG_PATTERN
-//     #define LOG_PATTERN = DEFAULT_PATTERN;
-// #endif
-
 #define CURRENT_TIME() []() -> std::string { \
     std::ostringstream oss; \
     std::time_t t = std::time(nullptr); \

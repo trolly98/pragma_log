@@ -1,13 +1,13 @@
 #pragma once
 
-#include "info_logger.hpp"
-#include "debug_logger.hpp"
-#include "warning_logger.hpp"
-#include "error_logger.hpp"
-#include "logging_category.hpp"
-#include "logging_registry.hpp"
-#include "logging_target.hpp"
-#include "patterns/logging_pattern.hpp"
+#include "log/info_logger.hpp"
+#include "log/debug_logger.hpp"
+#include "log/warning_logger.hpp"
+#include "log/error_logger.hpp"
+#include "log/logging_category.hpp"
+#include "log/logging_registry.hpp"
+#include "log/logging_target.hpp"
+#include "log/logging_pattern.hpp"
 
 #define PRAGMA_DECLARE_LOGGING_CATEGORY(name) \
     extern pragma::LoggingCategory name;
