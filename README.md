@@ -1,7 +1,3 @@
-Ecco l'aggiornamento del README con la spiegazione dettagliata della macro `PRAGMA_LOGGING_CONFIGURE` inclusa:
-
----
-
 # C++ Logging Library - README
 
 Welcome to pragma_log, a logging library that's simple and pragmatic! Whether you're debugging, tracking errors, or just need a solid log output for your project, this library gets the job done without any fluff. Easy to configure, easy to use, and, like any good tool, it focuses on what really matters. Let’s see how to put it to work.
@@ -33,9 +29,7 @@ Make sure the appropriate header file is included for logging functionality to w
 
 ### Option 2: 
 ```CMakeLists.txt
-add_directory(path/to/pragma_log)
-[...]
-target_link_libraries(pragma_log_example PRIVATE pragma_log)
+include_directories(path/to/pragma_log)
 ```
 
 
@@ -187,42 +181,3 @@ PRAGMA_LOGGING_PATTERN("%{level} - %{time} - %{file}:%{line} - %{message}");
 ```
 
 This will set the log format to include the log level, timestamp, file name, line number, and message content.
-
----
-
-## Full Example
-
-Here’s how a full example might look in your application:
-
-```cpp
-#include "pragma_logging.hpp"
-
-PRAGMA_DECLARE_LOGGING_CATEGORY(myCategory);
-PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(myCategory, "myCategory");
-
-int main() 
-{
-    PRAGMA_LOGGING_PATTERN("%{level} %{time} %{message}");
-    PRAGMA_LOGGING_CONFIGURE("myCategory.*=false, myCategory.error=true");
-    PRAGMA_LOGGING_TARGET_BOTH();
-
-
-    pragma_info(myCategory) << "Application started";
-    pragma_debug(myCategory) << "Debugging application";
-    pragma_warning(myCategory) << "This is a warning";
-    pragma_error(myCategory) << "An error occurred!";
-    
-    return 0;
-}
-```
-
-In this example:
-- We configure the logger to output `debug` level logs to the console.
-- We log messages at various levels (info, debug, warning, and error).
-- The logs will follow the custom pattern specified.
-
----
-
-## Conclusion
-
-This logging library gives you **full control** over your log outputs, allowing you to format logs as you see fit and send them to different targets. With categories, log levels, custom patterns, and granular configurations, your logs will be as readable and useful as possible. Get started today and enjoy a new world of logging possibilities! 🚀
