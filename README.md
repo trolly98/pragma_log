@@ -12,7 +12,6 @@ Welcome to pragma_log, a logging library that's simple and pragmatic! Whether yo
 - [Setting Logging Targets](#setting-logging-targets)
 - [Using Different Log Levels](#using-different-log-levels)
 - [Customizing Log Patterns](#customizing-log-patterns)
-- [Full Example](#full-example)
 
 ---
 
