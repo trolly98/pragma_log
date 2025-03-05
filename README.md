@@ -171,7 +171,10 @@ You can fully customize how your logs appear by changing the **log pattern**. He
 - **`%{message}`**: Log message.
 - **`%{threadid}`**: Current thread ID.
 - **`%{category}`**: Log category name.
-- **`%{time process}`**: Time since process start.
+- **`%{mic_time_process}`**: Microseconds since process start.
+- **`%{ms_time_process}`**: Milliseconds since process start.
+- **`%{sec_time_process}`**: Seconds since process start.
+- **`%{min_time_process}`**: Minutes since process start.
 
 To set your custom pattern, use the `PRAGMA_LOGGING_PATTERN(pattern)` macro:
 

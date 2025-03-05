@@ -9,22 +9,6 @@
 #include <thread>
 
 
-#define CURRENT_TIME() []() -> std::string { \
-    std::ostringstream oss; \
-    std::time_t t = std::time(nullptr); \
-    std::tm tm{}; \
-    localtime_r(&t, &tm); \
-    oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S"); \
-    return oss.str(); \
-}()
-
-#define TIME_PROCESS() []() -> std::string { \
-    static std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now(); \
-    auto now = std::chrono::steady_clock::now(); \
-    auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - start_time).count(); \
-    return std::to_string(duration); \
-}()
-
 #define THREAD_ID() []() -> std::string { \
     std::ostringstream oss; \
     oss << std::this_thread::get_id(); \

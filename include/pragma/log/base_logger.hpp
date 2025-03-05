@@ -12,12 +12,14 @@ class BaseLogger
 {
 public:
     constexpr BaseLogger(const LoggingCategory& category, 
-               const char* file, 
-               int line, 
-               const LoggingCategory::Level level)
-        : 
+        const char* file, 
+        const char* function, 
+        int line, 
+        const LoggingCategory::Level level)
+    : 
         _category(category), 
         _file(file), 
+        _function(function),
         _line(line), 
         _level(level)
     {}
@@ -34,7 +36,7 @@ public:
                 LoggingCategory::level_to_string(_level),
                 _file,
                 _line,
-                __func__,
+                _function,
                 _category.get_category_name()
                 );
 
@@ -72,6 +74,7 @@ public:
 protected:
     const LoggingCategory& _category;
     const char* _file;
+    const char* _function;
     int _line;
     LoggingCategory::Level _level;
 };

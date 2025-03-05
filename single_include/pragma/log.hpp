@@ -19,22 +19,6 @@
 
 
 
-#define CURRENT_TIME() []() -> std::string { \
-    std::ostringstream oss; \
-    std::time_t t = std::time(nullptr); \
-    std::tm tm{}; \
-    localtime_r(&t, &tm); \
-    oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S"); \
-    return oss.str(); \
-}()
-
-#define TIME_PROCESS() []() -> std::string { \
-    static std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now(); \
-    auto now = std::chrono::steady_clock::now(); \
-    auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - start_time).count(); \
-    return std::to_string(duration); \
-}()
-
 #define THREAD_ID() []() -> std::string { \
     std::ostringstream oss; \
     oss << std::this_thread::get_id(); \
@@ -116,13 +100,43 @@ public:
         _replace(result, "%{message}", message);
         _replace(result, "%{threadid}", THREAD_ID());
         _replace(result, "%{category}", category_name);
-        _replace(result, "%{time process}", TIME_PROCESS());
+
+        _replace(result, "%{ms_time_process}", std::to_string(LoggingPattern::_ms_time_processed()));
+        _replace(result, "%{mic_time_process}", std::to_string(LoggingPattern::_micros_time_processed()));
+        _replace(result, "%{sec_time_process}", std::to_string(LoggingPattern::_seconds_time_processed()));
+        _replace(result, "%{min_time_process}", std::to_string(LoggingPattern::_minutes_time_processed()));
 
         return result;
     }
 
 private:
+    const std::chrono::steady_clock::time_point _start_time;
+
     std::string _log_pattern = "[%{time}] [%{level}] %{message} (%{file}:%{line})";
+
+    explicit LoggingPattern() : 
+        _start_time(std::chrono::steady_clock::now())
+    {}
+
+    const std::int64_t _minutes_time_processed()
+    {
+        return std::chrono::duration_cast<std::chrono::minutes>(std::chrono::steady_clock::now() - _start_time).count();
+    }
+
+    const std::int64_t _seconds_time_processed()
+    {
+        return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - _start_time).count();
+    }
+
+    const std::int64_t _ms_time_processed()
+    {
+        return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - _start_time).count();
+    }
+
+    const std::int64_t _micros_time_processed()
+    {
+        return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - _start_time).count();
+    }
 
     static void _replace(std::string& text, const std::string& placeholder, const std::string& value)
     {
@@ -134,6 +148,8 @@ private:
         }
     }
 };
+
+static LoggingPattern& forceLoggingPatternInitialization = LoggingPattern::instance();
 
 }
 
@@ -337,12 +353,14 @@ class BaseLogger
 {
 public:
     constexpr BaseLogger(const LoggingCategory& category, 
-               const char* file, 
-               int line, 
-               const LoggingCategory::Level level)
-        : 
+        const char* file, 
+        const char* function, 
+        int line, 
+        const LoggingCategory::Level level)
+    : 
         _category(category), 
         _file(file), 
+        _function(function),
         _line(line), 
         _level(level)
     {}
@@ -359,7 +377,7 @@ public:
                 LoggingCategory::level_to_string(_level),
                 _file,
                 _line,
-                __func__,
+                _function,
                 _category.get_category_name()
                 );
 
@@ -397,6 +415,7 @@ public:
 protected:
     const LoggingCategory& _category;
     const char* _file;
+    const char* _function;
     int _line;
     LoggingCategory::Level _level;
 };
@@ -415,9 +434,11 @@ class InfoLogger : public BaseLogger
 public:
     constexpr InfoLogger(const LoggingCategory& category, 
                 const char* file, 
+                const char* function, 
                 int line) : 
         BaseLogger(category,
                     file, 
+                    function,
                     line, 
                     LoggingCategory::Level::INFO) 
     {}
@@ -437,9 +458,11 @@ class DebugLogger : public BaseLogger
 public:
     constexpr DebugLogger(const LoggingCategory& category, 
                 const char* file, 
+                const char* function, 
                 int line) : 
         BaseLogger(category,
                     file, 
+                    function,
                     line, 
                     LoggingCategory::Level::DEBUG) 
     {}
@@ -459,9 +482,11 @@ class WarningLogger : public BaseLogger
 public:
     constexpr WarningLogger(const LoggingCategory& category, 
                 const char* file, 
+                const char* function, 
                 int line) : 
         BaseLogger(category,
                     file,
+                    function,
                     line, 
                     LoggingCategory::Level::WARNING) 
     {}
@@ -481,9 +506,11 @@ class ErrorLogger : public BaseLogger
 public:
     constexpr ErrorLogger(const LoggingCategory& category, 
                 const char* file, 
+                const char* function, 
                 int line) : 
         BaseLogger(category, 
                     file, 
+                    function,
                     line, 
                     LoggingCategory::Level::ERROR) 
     {}
@@ -519,9 +546,9 @@ public:
 #define PRAGMA_LOGGING_TARGET_SYSLOG() \
     pragma::LoggingTarget::instance().set(pragma::LoggingTarget::Target::SYSLOG);
 
-#define pragma_info(category) pragma::InfoLogger(category, __FILE__, __LINE__)
-#define pragma_debug(category) pragma::DebugLogger(category, __FILE__, __LINE__)
-#define pragma_warning(category) pragma::WarningLogger(category, __FILE__, __LINE__)
-#define pragma_error(category) pragma::ErrorLogger(category, __FILE__, __LINE__)
+#define pragma_info(category) pragma::InfoLogger(category, __FILE__, __func__, __LINE__)
+#define pragma_debug(category) pragma::DebugLogger(category, __FILE__, __func__, __LINE__)
+#define pragma_warning(category) pragma::WarningLogger(category, __FILE__, __func__, __LINE__)
+#define pragma_error(category) pragma::ErrorLogger(category, __FILE__, __func__, __LINE__)
 
 

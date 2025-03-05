@@ -33,7 +33,7 @@
 #define PRAGMA_LOGGING_TARGET_SYSLOG() \
     pragma::LoggingTarget::instance().set(pragma::LoggingTarget::Target::SYSLOG);
 
-#define pragma_info(category) pragma::InfoLogger(category, __FILE__, __LINE__)
-#define pragma_debug(category) pragma::DebugLogger(category, __FILE__, __LINE__)
-#define pragma_warning(category) pragma::WarningLogger(category, __FILE__, __LINE__)
-#define pragma_error(category) pragma::ErrorLogger(category, __FILE__, __LINE__)
+#define pragma_info(category) pragma::InfoLogger(category, __FILE__, __func__, __LINE__)
+#define pragma_debug(category) pragma::DebugLogger(category, __FILE__, __func__, __LINE__)
+#define pragma_warning(category) pragma::WarningLogger(category, __FILE__, __func__, __LINE__)
+#define pragma_error(category) pragma::ErrorLogger(category, __FILE__, __func__, __LINE__)
