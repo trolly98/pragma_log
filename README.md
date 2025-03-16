@@ -157,6 +157,41 @@ Each macro will automatically include metadata like the file, line number, and f
 
 ---
 
+# Logging Methodologies
+
+### Method 1: Using the Stream Operator (`<<`)
+
+This method allows you to send multiple log messages using the stream operator `<<`. 
+Each message will be logged on a **new line**.
+
+Example:
+```cpp
+pragma_info(pragma_log1) << "This is a message" << "This is another message";
+```
+
+Output:
+```
+[INFO] pragma_log1 This is a message
+[INFO] pragma_log1 This is another message
+```
+
+### Method 2: Using the Function Call Operator (`()`)
+
+This method allows you to send multiple log messages in a single **log entry**, 
+all on the **same line**.
+
+Example:
+```cpp
+pragma_info(pragma_log2)("This is a message", "This is another message");
+```
+
+Output:
+```
+[INFO] pragma_log2 This is a message This is another message
+```
+
+---
+
 ## Customizing Log Patterns
 
 You can fully customize how your logs appear by changing the **log pattern**. Here are the available pattern placeholders:

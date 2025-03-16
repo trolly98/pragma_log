@@ -10,6 +10,13 @@
 PRAGMA_DECLARE_LOGGING_CATEGORY(TEST);
 PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(TEST, "TEST");
 
+
+PRAGMA_DECLARE_LOGGING_CATEGORY(fast_log);
+PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(fast_log, "fast_log");
+
+PRAGMA_DECLARE_LOGGING_CATEGORY(slow_log);
+PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(slow_log, "slow_log");
+
 int main(int argc, char* argv[])
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -19,7 +26,15 @@ int main(int argc, char* argv[])
 
     PRAGMA_LOGGING_CONFIGURE("TEST.*=true");
     PRAGMA_LOGGING_TARGET_BOTH();
-    
+
+// ? This is the only method to concatenate different values in the same message;
+    pragma_debug(TEST)("TEST", 5, 5.9);
+// ? /////////////////////////////////////////////////////////////////////
+
+// ? This method print in different lines the values;
+    pragma_debug(TEST) << "TEST" << 5 << 5.9;
+// ? /////////////////////////////////////////////////////////////////////
+
     pragma_info(TEST) << 5.9;
     pragma_debug(TEST) << 5;
     pragma_info(TEST) << "Info";

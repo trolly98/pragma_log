@@ -422,13 +422,14 @@ public:
         return *this;
     }
 
-    // template<typename T, typename... Args>
-    // BaseLogger& operator()(const T& first, const Args&... args) 
-    // {
-    //     _log(first);
-    //     return (*this)(args...);
-    // }
-
+    template<typename... Args>
+    BaseLogger& operator()(Args&&... args)
+    {
+        std::string result;
+        this->_concat(result, std::forward<Args>(args)...);
+        _log(result);
+        return *this;
+    }
 
 protected:
     const LoggingCategory& _category;
@@ -483,6 +484,36 @@ private:
             _level == LoggingCategory::Level::WARNING ? _category.is_warning_enabled() :
             _level == LoggingCategory::Level::ERROR ? _category.is_error_enabled() : false
         );
+    }
+
+    void _concat(std::string& result) {}
+
+    template<typename T, typename... Args>
+    void _concat(std::string& result, const T& first, Args&&... args) 
+    {
+        result += this->_to_string_helper(first) + " ";
+        this->_concat(result, std::forward<Args>(args)...);
+    }
+
+    template<typename T>
+    typename std::enable_if<std::is_floating_point<T>::value, std::string>::type
+    _to_string_helper(const T& value)
+    {
+        return std::to_string(value);
+    }
+
+    template<typename T>
+    typename std::enable_if<std::is_integral<T>::value, std::string>::type
+    _to_string_helper(const T& value)
+    {
+        return std::to_string(value);
+    }
+
+    template<typename T>
+    typename std::enable_if<!std::is_arithmetic<T>::value, std::string>::type
+    _to_string_helper(const T& value)
+    {
+        return std::string(value);
     }
 };
 
