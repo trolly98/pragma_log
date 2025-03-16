@@ -69,6 +69,11 @@ PRAGMA_LOGGING_CONFIGURE("category_name.level=true/false");
 PRAGMA_LOGGING_CONFIGURE("category_name.*=true/false");
 ```
 
+You can disable or enable all category and level with:
+```cpp
+PRAGMA_LOGGING_CONFIGURE("*.*=true/false");
+```
+
 Here’s what you can configure:
 
 - **`category_name.debug=true/false`**: Enables or disables the `debug` level logs for the specified category.
@@ -100,6 +105,14 @@ You can also define **global configurations** that affect multiple categories:
 ```cpp
 PRAGMA_LOGGING_CONFIGURE("myCategory.*=false"); // Disable all logs for 'myCategory'
 PRAGMA_LOGGING_CONFIGURE("network.debug=true");  // Enable debug logs for the 'network' category
+```
+
+```cpp
+PRAGMA_LOGGING_CONFIGURE("*.*=false"); // Disable all logs for all Category
+```
+
+```cpp
+PRAGMA_LOGGING_CONFIGURE("*.*=true"); // Enable all logs for all Category
 ```
 
 This gives you **fine-grained control** over which logs are generated, allowing you to keep your output clean and focused on the most important information.

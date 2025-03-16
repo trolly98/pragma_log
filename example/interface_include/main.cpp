@@ -10,13 +10,6 @@
 PRAGMA_DECLARE_LOGGING_CATEGORY(TEST);
 PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(TEST, "TEST");
 
-
-PRAGMA_DECLARE_LOGGING_CATEGORY(fast_log);
-PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(fast_log, "fast_log");
-
-PRAGMA_DECLARE_LOGGING_CATEGORY(slow_log);
-PRAGMA_DECLARE_LOGGING_CATEGORY_NAME(slow_log, "slow_log");
-
 int main(int argc, char* argv[])
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -24,6 +17,7 @@ int main(int argc, char* argv[])
     PRAGMA_LOGGING_PATTERN("[%{full_time}] [%{level}] %{message} (%{file}:%{line}) --> %{function} : %{threadid} %{category} \
         MIN: %{min_time_process} SEC: %{sec_time_process} MS: %{ms_time_process} MIC: %{mic_time_process}");
 
+    //PRAGMA_LOGGING_CONFIGURE("*.*=true");
     PRAGMA_LOGGING_CONFIGURE("TEST.*=true");
     PRAGMA_LOGGING_TARGET_BOTH();
 

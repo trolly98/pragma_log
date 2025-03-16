@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <cstdint> 
+#include <cstring>
 #include "utils.hpp"
 namespace pragma
 {
@@ -15,7 +16,8 @@ public:
         INFO,
         DEBUG,
         WARNING,
-        ERROR
+        ERROR,
+        ALL
     };
 
     static constexpr const char* level_to_string(Level level)
@@ -24,8 +26,18 @@ public:
         (
             level == Level::INFO ? "INFO" :
             level == Level::DEBUG ? "DEBUG" :
-            level == Level::WARNING ? "WARNING" : 
-            level == Level::ERROR ? "ERROR" : "Unknown"
+            level == Level::WARNING ? "WARNING" :
+            level == Level::ERROR ? "ERROR" : "ALL"
+        );
+    }
+    static constexpr Level string_to_level(const char* level)
+    {
+        return 
+        (
+            strcasecmp(level, "info") == 0 ? Level::INFO :
+            strcasecmp(level, "debug") == 0 ? Level::DEBUG :
+            strcasecmp(level, "warning") == 0 ? Level::WARNING :
+            strcasecmp(level, "error") == 0 ? Level::ERROR : Level::ALL
         );
     }
 
