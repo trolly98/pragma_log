@@ -3,12 +3,24 @@
 SOURCE_FOLDER="../include/pragma"
 OUTPUT_FOLDER="../single_include/pragma"
 OUTPUT_FILE="$OUTPUT_FOLDER/log.hpp"
+VERSION=$(git describe --tags --abbrev=0)
+MAINTAINER=$(git log -1 --pretty=format:'%an')
+LAST_RELEASE_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
 
 # Crea la cartella di destinazione se non esiste
 mkdir -p "$OUTPUT_FOLDER"
 
 # Svuota il file di output se esiste già
 > "$OUTPUT_FILE"
+
+echo -e "/*\n\n" >> "$OUTPUT_FILE"
+
+echo -e "██████  ██████   █████   ██████  ███    ███  █████          ██       ██████   ██████  \n██   ██ ██   ██ ██   ██ ██       ████  ████ ██   ██         ██      ██    ██ ██       \n██████  ██████  ███████ ██   ███ ██ ████ ██ ███████         ██      ██    ██ ██   ███ \n██      ██   ██ ██   ██ ██    ██ ██  ██  ██ ██   ██         ██      ██    ██ ██    ██ \n██      ██   ██ ██   ██  ██████  ██      ██ ██   ██ ███████ ███████  ██████   ██████  "  >> "$OUTPUT_FILE"
+echo -e "\n        Version: $VERSION" >> "$OUTPUT_FILE"
+echo -e "\n        Maintainer: $MAINTAINER" >> "$OUTPUT_FILE"
+echo -e "\n        Last Release Date: $LAST_RELEASE_DATE" >> "$OUTPUT_FILE"
+
+echo -e "\n\n*/" >> "$OUTPUT_FILE"
 
 # Aggiungi #pragma once all'inizio del file di output
 echo "#pragma once" >> "$OUTPUT_FILE"
