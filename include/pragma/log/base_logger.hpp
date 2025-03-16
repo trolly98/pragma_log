@@ -27,7 +27,30 @@ public:
     template<typename T>
     BaseLogger& operator<<(const T& message) 
     {
-        if (this->is_enabled()) 
+        _log(message);
+        return *this;
+    }
+
+    // template<typename T, typename... Args>
+    // BaseLogger& operator()(const T& first, const Args&... args) 
+    // {
+    //     _log(first);
+    //     return (*this)(args...);
+    // }
+
+
+protected:
+    const LoggingCategory& _category;
+    const char* _file;
+    const char* _function;
+    int _line;
+    LoggingCategory::Level _level;
+
+private:
+    template<typename T>
+    constexpr void _log(const T& message)
+    {
+        if (this->_is_enabled()) 
         {
             const auto target = LoggingTarget::instance().get();
 
@@ -44,23 +67,23 @@ public:
             {
                 syslog  (LOG_INFO, "%s", msg.c_str());
                 std::cout << msg << std::endl;
-                return *this;
+                return;
             }
             if (target == LoggingTarget::Target::CONSOLE)
             {
                 std::cout << msg << std::endl;
-                return *this;
+                return;
             }
             if (target == LoggingTarget::Target::SYSLOG)
             {
                 syslog  (LOG_INFO, "%s", msg.c_str());
-                return *this;
+                return;
             }
         }
-        return *this;
-    }
+        return;
+    }    
 
-    constexpr bool is_enabled() const 
+    constexpr bool _is_enabled() const 
     {
         return 
         (
@@ -70,13 +93,6 @@ public:
             _level == LoggingCategory::Level::ERROR ? _category.is_error_enabled() : false
         );
     }
-
-protected:
-    const LoggingCategory& _category;
-    const char* _file;
-    const char* _function;
-    int _line;
-    LoggingCategory::Level _level;
 };
 
 }

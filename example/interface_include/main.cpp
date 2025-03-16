@@ -19,7 +19,9 @@ int main(int argc, char* argv[])
 
     PRAGMA_LOGGING_CONFIGURE("TEST.*=true");
     PRAGMA_LOGGING_TARGET_BOTH();
-
+    
+    pragma_info(TEST) << 5.9;
+    pragma_debug(TEST) << 5;
     pragma_info(TEST) << "Info";
     pragma_debug(TEST) << "Debug";
     pragma_warning(TEST) << "Warning";

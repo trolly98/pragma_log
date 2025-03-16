@@ -22,12 +22,15 @@ public:
         _log_pattern = pattern;
     }
 
-    const std::string format(const char* message,
-                                    const char* level,
-                                    const char* file,
-                                    int line,
-                                    const char* function,
-                                    const char* category_name) 
+    template<typename T>
+    const std::string format(       
+                                const T& message,
+                                const char* level,
+                                const char* file,
+                                int line,
+                                const char* function,
+                                const char* category_name
+                            ) 
     {
         std::string result = _log_pattern;
         
@@ -81,15 +84,45 @@ private:
         return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - _start_time).count();
     }
 
-    static void _replace(std::string& text, const std::string& placeholder, const std::string& value)
+    template<typename T>
+    static typename std::enable_if<std::is_floating_point<T>::value, void>::type
+    _replace(std::string& text, const std::string& placeholder, const T& value)
+    {
+        std::string value_str = std::to_string(value);
+
+        // REMOVE extra zeros
+        value_str.erase(value_str.find_last_not_of('0') + 1, std::string::npos);
+        if (value_str.back() == '.') 
+        {
+            value_str.pop_back();
+        }
+        return _replace_placeholder(text, placeholder, value_str);
+    }
+
+    template<typename T>
+    static typename std::enable_if<std::is_integral<T>::value, void>::type
+    _replace(std::string& text, const std::string& placeholder, const T& value)
+    {
+        return _replace_placeholder(text, placeholder, std::to_string(value));
+    }
+
+    template<typename T>
+    static typename std::enable_if<!std::is_arithmetic<T>::value, void>::type
+    _replace(std::string& text, const std::string& placeholder, const T& value)
+    {
+        return _replace_placeholder(text, placeholder, std::string(value));
+    }
+
+    static void _replace_placeholder(std::string& text, const std::string& placeholder, const std::string& value_str)
     {
         size_t pos = 0;
         while ((pos = text.find(placeholder, pos)) != std::string::npos)
         {
-            text.replace(pos, placeholder.length(), value);
-            pos += value.length();
+            text.replace(pos, placeholder.length(), value_str);
+            pos += value_str.length();
         }
     }
+
 };
 
 static LoggingPattern& forceLoggingPatternInitialization = LoggingPattern::instance();

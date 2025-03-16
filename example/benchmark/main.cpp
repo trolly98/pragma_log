@@ -26,6 +26,18 @@ int main(int argc, char* argv[])
 
     measure_execution_time([]() {
         for (int i = 0; i < 1000000; ++i) {
+            pragma_debug(TEST) << 5;
+        }
+    });
+
+    measure_execution_time([]() {
+        for (int i = 0; i < 1000000; ++i) {
+            pragma_debug(TEST) << 5.9;
+        }
+    });
+
+    measure_execution_time([]() {
+        for (int i = 0; i < 1000000; ++i) {
             pragma_debug(TEST) << "TEST";
         }
     });
