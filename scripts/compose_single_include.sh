@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# ===========================
+# NOTE: Run this script from within the 'scripts' directory where it is located.
+# ===========================
+
+
 SOURCE_FOLDER="../include/pragma"
 OUTPUT_FOLDER="../single_include/pragma"
 OUTPUT_FILE="$OUTPUT_FOLDER/log.hpp"

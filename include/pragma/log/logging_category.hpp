@@ -50,7 +50,7 @@ public:
     { 
         return _category_name;
     }
-    constexpr const category_id_t get_category_id() const 
+    constexpr category_id_t get_category_id() const 
     { 
         return djb2_hash(_category_name);
     }

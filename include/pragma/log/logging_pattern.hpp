@@ -17,7 +17,7 @@ public:
         return instance;
     }
 
-    const void set_pattern(const std::string &pattern)
+    void set_pattern(const std::string &pattern)
     {
         _log_pattern = pattern;
     }
@@ -64,22 +64,22 @@ private:
         _start_time(std::chrono::steady_clock::now())
     {}
 
-    const std::int64_t _minutes_time_processed()
+    std::int64_t _minutes_time_processed()
     {
         return std::chrono::duration_cast<std::chrono::minutes>(std::chrono::steady_clock::now() - _start_time).count();
     }
 
-    const std::int64_t _seconds_time_processed()
+    std::int64_t _seconds_time_processed()
     {
         return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - _start_time).count();
     }
 
-    const std::int64_t _ms_time_processed()
+    std::int64_t _ms_time_processed()
     {
         return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - _start_time).count();
     }
 
-    const std::int64_t _micros_time_processed()
+    std::int64_t _micros_time_processed()
     {
         return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - _start_time).count();
     }
